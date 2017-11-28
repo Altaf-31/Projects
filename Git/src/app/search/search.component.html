@@ -1,0 +1,46 @@
+<h1 class="w3-center">GITHUB PROFILE SEARCH</h1>
+<div class="w3-container w3-red w3-padding-large w3-margin-top" style="width: 90%; margin:auto">
+  <input type="text" name="searchBox" [(ngModel)]="searchBox" placeholder="Search..." (keyup)="Finder()">
+</div>
+
+<div class="w3-container w3-padding" style="width: 90%; margin:auto" *ngIf = "user" [hidden]="!searchBox.length > 0">
+  <div class="w3-panel w3-black">
+    <h2>{{user.name}}</h2>
+  </div>
+
+  <div class="w3-card-2 w3-padding-large">
+	   <div class="w3-row">
+				<div class="w3-col l3 w3-margin-right">
+					<img src="{{user.avatar_url}}" class="w3-image" style="width:100%">
+					<a target="_blank" class="w3-button w3-block w3-red" href="{{user.html_url}}">View Profile</a>
+				</div>
+
+				<div class = "w3-col l8 w3-margin-left">
+					<span class="w3-green w3-padding-small w3-round-large w3-margin-top" style="display:inline-flex">Public Repos: {{user.public_repos}}</span>
+				  <span class="w3-yellow w3-padding-small w3-round-large" style="display:inline-flex">Public Gists: {{user.public_gists}}</span>
+					<span class="w3-orange w3-padding-small w3-round-large w3-margin-top" style="display:inline-flex">Followers: {{user.followers}}</span>
+					<span class="w3-black w3-padding-small w3-round-large w3-margin-top" style="display:inline-flex">Following: {{user.following}}</span>
+					<br><br>
+					<ul class="w3-ul w3-white">
+						<li class="w3-padding-16 w3-hover-red">
+								Company: {{user.company}}</li>
+						<li class="w3-padding-16 w3-hover-red">
+								Website: {{user.blog}}</li>
+						<li class="w3-padding-16 w3-hover-red">
+								Location: {{user.location}}</li>
+						<li class="w3-padding-16 w3-hover-red">
+								Member Since: {{user.created_at}}</li>
+					</ul>
+				</div>
+		</div>
+	</div>
+
+  <div class="w3-card-2">
+    <h2>Repository</h2>
+    <ul class="w3-ul">
+      <li *ngFor= "let r of repos | slice:0:5">
+        {{r.name}}
+      </li>
+    </ul>
+  </div>
+</div>
