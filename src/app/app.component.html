@@ -1,0 +1,24 @@
+<div class="w3-container w3-margin-top">
+  <div class="w3-panel w3-orange w3-padding-large">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+          <input name="first" ngModel required #first="ngModel">
+          <button class="w3-button w3-blue">Submit</button>
+    </form>
+  </div>
+  <div class="w3-row">
+    <div class="w3-col l5 m5 s6 w3-container w3-center">
+      <h3 class="w3-text-white">Uncompleted Tasks</h3>
+      <ul class="w3-ul w3-margin w3-red">
+        <li *ngFor="let n of list; let index = index" (click)="remove(index)">{{n}}
+        </li>
+      </ul>
+    </div>
+
+    <div class="w3-col l5 m5 s6 w3-container w3-center">
+      <h3 class="w3-text-white">Completed Tasks</h3>
+      <ul class="w3-ul w3-margin w3-green">
+        <li *ngFor="let d of done">{{d}}</li>
+      </ul>
+    </div>
+  </div>
+</div>
