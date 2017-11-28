@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Finder</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<style>
+		
+		#searchBox {
+    /* vendor prefixes excluded for brevity */
+    	transition: width 5s linear,
+                height 5s linear;
+		}
+
+		.change-size {
+	    width: 500px;
+	    height: 200px;
+		}
+	</style>
+
+</head>
+<body class="w3-blue">
+	<div class="w3-container w3-center w3-padding" style="width:80%; margin:16% auto auto auto">
+		<p class="w3-text-white w3-xxlarge"><a href="https://en.wikipedia.org/wiki/Special:Random" target="_blank" style="text-decoration: none">Click here for a random article</a></p>
+		<button class="w3-btn" id="searchIcon"><i class="fa fa-search" style="font-size: 60px"></i></button>
+		<form id="myForm" style="width:80% ; margin: auto">
+			<input class="w3-input w3-round-xxlarge w3-padding w3-border-red w3-topbar w3-bottombar w3-leftbar w3-rightbar" type="text" placeholder="Search" id="searchBox">
+		</form>
+		<p class="w3-text-black w3-xlarge">Click icon to search</p>
+	</div>
+
+	<div class="w3-container w3-padding-16" style="width:80%;margin:auto" id="resultHere">
+	</div>
+
+
+	<script>
+	$(document).ready(function(){
+
+		$('#searchBox').hide();
+		$('#searchIcon').click(function(){
+			$(this).fadeOut(500,function(){
+				$('#searchBox').fadeIn(500)
+					//$('#searchBox').addClass('change-size')
+			});
+		});
+
+		$('#myForm').on('submit',function(e){
+
+			var term = $('#searchBox').val();
+			var url = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" +term+"&format=json&callback=?";
+
+			$.ajax({
+				type:'GET',
+				url: url,
+				async: false,
+				dataType: "json",
+				success: function(data){
+					$('#resultHere').html("");
+					for(var i=0;i<data[1].length;i++)
+					{
+						$('#resultHere').append(`
+							<div class="w3-panel w3-white w3-hover-green">
+							<a href="${data[3][i]}" target="_blank" style="text-decoration:none">
+								<h3>${data[1][i]}</h3>
+								<p>${data[2][i]}</p>
+							</a>
+							</div>
+						`);
+					}
+				}
+			});
+			e.preventDefault();
+		});
+
+	});
+	</script>
+</body>
+</html>

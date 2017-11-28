@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Finder</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<style type="text/css">
+
+		html { 
+  background: url(nature.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+		#cel, #far {
+			padding: 25px;
+			font-size: 22px;
+			color: blue;
+			cursor: pointer;
+		}
+		
+	</style>
+</head>
+<body>
+	<header class="w3-center w3-text-green">
+		<h2 class="w3-xxlarge">Local Weather App</h2>
+	</header>
+	<br>
+	<section class="w3-section w3-center">
+		<div class="w3-container w3-center" style="width:40%; margin:auto">
+			<span id="cel">Celsius</span><span id="far">Fahrenheit</span>
+			<p id="Temp"></p>
+		</div>
+	</section>
+	<div class="w3-container w3-center" style="width:40%; margin:auto">
+			<div class="w3-row-padding">
+				<div class="w3-col l3 w3-margin">
+					<h3 id="Location"></h3>
+				</div>
+				
+				<div class="w3-col l3 w3-margin">
+					<h3 id="Desc"></h3>
+				</div>
+
+				<div class="w3-col l3 w3-margin">
+					<h3 id="Wind"></h3>
+				</div>
+			</div>
+
+	</div>
+
+
+	<script>
+		
+		$(document).ready(function(){
+
+			var lat;
+			var long;
+			var fTemp;
+			var cTemp;
+			$.getJSON("http://freegeoip.net/json/", function(data) {
+    		lat = data.latitude;
+    		long = data.longitude;
+    		var country = data.country_name;
+			var url = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+long+'&appid=8f39ed9f59eee4b7eceba05ceab9e1ce';
+			
+			$.getJSON(url,function(data){
+				fTemp = Math.round((9/5)*(data.main.temp-273)+32);
+				cTemp = Math.round((data.main.temp-273));
+				$('#cel').on('click',function(){
+					if(data.weather[0].main=="Haze")
+					{
+						$('#Temp').html('<h1><i class="fa fa-cloud"></i>'+"	  "+cTemp+'C</h1>');
+					}	
+					else if(data.weather[0].main=="Clouds")	
+					{
+						$('#Temp').html('<h1><i class="fa fa-cloud"></i>'+"	  "+cTemp+'C</h1>');
+					}
+					else if(data.weather[0].main=="Snow")
+					{
+						$('#Temp').html('<h1><i class="fa fa-snowflake-o"></i>'+"	  "+cTemp+'C</h1>');
+					}
+					else if(data.weather[0].main=="Clear" || data.weather[0].main=="Sunny" )
+					{
+						$('#Temp').html('<h1><i class="fa fa-sun-o"></i>'+"	  "+cTemp+'C</h1>');
+					}
+					/*
+					else if(data.weather[0].main=="Rainy")
+					{
+						$('#Temp').html('<h1><i class="fa fa-sun-o"></i>'+"	  "+cTemp+'C</h1>');
+					}
+					*/
+					$('#Location').html('<p class="w3-card w3-center w3-text-purple w3-white">'+country+'</p>');
+					$('#Desc').html('<p class="w3-card w3-center w3-text-purple w3-white">'+data.weather[0].description+'</p>');
+					$('#Wind').html('<p class="w3-card w3-center w3-text-purple w3-white">'+data.wind.speed+'</p>');
+
+				});
+				$('#far').on('click',function(){
+					if(data.weather[0].main=="Haze")
+					{
+						$('#Temp').html('<h1><i class="fa fa-cloud"></i>'+"	  "+fTemp+'C</h1>');
+					}	
+					else if(data.weather[0].main=="Clouds")	
+					{
+						$('#Temp').html('<h1><i class="fa fa-cloud"></i>'+"	  "+fTemp+'C</h1>');
+					}
+					else if(data.weather[0].main=="Snow")
+					{
+						$('#Temp').html('<h1><i class="fa fa-snowflake-o"></i>'+"	  "+fTemp+'C</h1>');
+					}
+					else if(data.weather[0].main=="Clear" || data.weather[0].main=="Sunny" )
+					{
+						$('#Temp').html('<h1><i class="fa fa-sun-o"></i>'+"	  "+fTemp+'C</h1>');
+					}	
+					$('#Location').html('<p class="w3-card w3-center w3-text-purple w3-white">'+country+'</p>');
+					$('#Desc').html('<p class="w3-card w3-center w3-text-purple w3-white">'+data.weather[0].description+'</p>');
+					$('#Wind').html('<p class="w3-card w3-center w3-text-purple w3-white">'+data.wind.speed+'</p>');	
+				});
+			});
+		});
+			
+	});
+	</script>
+</body>
+</html>
